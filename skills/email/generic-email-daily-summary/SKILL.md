@@ -7,8 +7,8 @@ description: 通用多邮箱 24 小时邮件摘要技能。通过环境变量配
 
 ## 适用场景
 - 一个或多个邮箱需要做过去 24 小时邮件摘要
-- 定时任务会先运行脚本，脚本输出标准 JSON
-- 需要把 JSON 转成适合 Telegram/聊天窗口阅读的中文详细摘要
+- 定时任务或手动执行会先运行 skill 内置脚本 `scripts/email_summary_last24h.py`
+- 脚本输出标准 JSON，再由 skill 生成适合 Telegram/聊天窗口阅读的中文详细摘要
 
 ## 配置方式
 邮箱列表不写死在 skill 里，而是通过环境变量提供。
@@ -41,6 +41,10 @@ description: 通用多邮箱 24 小时邮件摘要技能。通过环境变量配
   }
 ]
 ```
+
+## 技能目录结构
+- `SKILL.md`：摘要规则与输出格式
+- `scripts/email_summary_last24h.py`：多邮箱 IMAP 抓取脚本
 
 ## 脚本输出假设
 脚本会输出：
