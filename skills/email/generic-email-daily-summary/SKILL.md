@@ -13,38 +13,56 @@ description: 通用多邮箱 24 小时邮件摘要技能。通过环境变量配
 ## 配置方式
 邮箱列表不写死在 skill 里，而是通过环境变量提供。
 
+推荐把实际配置放在：
+- `skills/email/generic-email-daily-summary/.env`
+
+并把可提交到仓库的模板放在：
+- `skills/email/generic-email-daily-summary/.env.example`
+
+脚本读取顺序：
+1. skill 目录下的 `.env`
+2. 用户级 `~/.hermes/.env`
+3. 当前 shell 已导出的环境变量
+
 关键环境变量：
 - `HERMES_EMAIL_ACCOUNTS_JSON`
 - 各邮箱密码分别放到独立环境变量中，例如：
-  - `HERMES_EMAIL_126_APP_PASSWORD`
-  - `HERMES_EMAIL_GMAIL_APP_PASSWORD`
+  - `HERMES_EMAIL_PRIMARY_APP_PASSWORD`
+  - `HERMES_EMAIL_SECONDARY_APP_PASSWORD`
 
-### HERMES_EMAIL_ACCOUNTS_JSON 示例
+### HERMES_EMAIL_ACCOUNTS_JSON 通用示例
 ```json
 [
   {
-    "label": "126",
-    "email": "acongm@126.com",
-    "host": "imap.126.com",
+    "label": "primary",
+    "email": "your-email@example.com",
+    "host": "imap.example.com",
     "port": 993,
     "folder": "INBOX",
-    "password_env": "HERMES_EMAIL_126_APP_PASSWORD",
-    "imap_id_workaround": true
+    "password_env": "HERMES_EMAIL_PRIMARY_APP_PASSWORD"
   },
   {
-    "label": "gmail",
-    "email": "o.arvin.peng@gmail.com",
-    "host": "imap.gmail.com",
+    "label": "secondary",
+    "email": "another-email@example.com",
+    "host": "imap.another-provider.com",
     "port": 993,
     "folder": "INBOX",
-    "password_env": "HERMES_EMAIL_GMAIL_APP_PASSWORD"
+    "password_env": "HERMES_EMAIL_SECONDARY_APP_PASSWORD",
+    "imap_id_workaround": false
   }
 ]
 ```
 
+说明：
+- 新增邮箱类型时，只需要往 `HERMES_EMAIL_ACCOUNTS_JSON` 追加一个账户对象
+- `imap_id_workaround` 用于兼容少数需要 IMAP ID 扩展的服务商
+- 不要把真实邮箱地址、密码、app password 直接写进 `SKILL.md`
+
 ## 技能目录结构
 - `SKILL.md`：摘要规则与输出格式
 - `scripts/email_summary_last24h.py`：多邮箱 IMAP 抓取脚本
+- `.env.example`：可提交的配置模板
+- `.env`：本地实际配置（不要提交）
 
 ## 脚本输出假设
 脚本会输出：

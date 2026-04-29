@@ -143,6 +143,9 @@ def collect_account(account, window_start, window_end, local_tz):
 
 
 def main():
+    script_dir = Path(__file__).resolve().parent
+    skill_dir = script_dir.parent
+    load_dotenv(skill_dir/'.env')
     load_dotenv(Path.home()/'.hermes/.env')
     local_tz = datetime.datetime.now().astimezone().tzinfo
     now = datetime.datetime.now(local_tz)
