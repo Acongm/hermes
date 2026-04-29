@@ -21,19 +21,18 @@ Create, clone, fork, configure, and manage GitHub repositories. Each section sho
 ### Setup
 
 ```bash
-if command -v gh &>/dev/null && gh auth status &>/dev/null; then
-  AUTH="gh"
-else
-  AUTH="git"
-  if [ -z "$GITHUB_TOKEN" ]; then
-    if [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then
-      GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')
-    elif grep -q "github.com" ~/.git-credentials 2>/dev/null; then
-      GITHUB_TOKEN=$(grep "github.com" ~/.git-credentials 2>/dev/null | head -1 | sed 's|https://[^:]*:\([^@]*\)@.*|\1|')
-    fi
-  fi
+# Reuse the shared GitHub auth helper shipped with this repo
+source skills/github/github-auth/scripts/gh-env.sh
+
+if [ "$GH_AUTH_METHOD" = "none" ]; then
+  echo "GitHub auth missing"
+  exit 1
 fi
 
+AUTH="$GH_AUTH_METHOD"
+```
+```bash
+# Get your GitHub username (needed for several operations)
 # Get your GitHub username (needed for several operations)
 if [ "$AUTH" = "gh" ]; then
   GH_USER=$(gh api user --jq '.login')

@@ -214,21 +214,12 @@ grep "github.com" ~/.git-credentials 2>/dev/null | head -1 | sed 's|https://[^:]
 Use this pattern at the start of any GitHub workflow:
 
 ```bash
-# Try gh first, fall back to git + curl
-if command -v gh &>/dev/null && gh auth status &>/dev/null; then
-  echo "AUTH_METHOD=gh"
-elif [ -n "$GITHUB_TOKEN" ]; then
-  echo "AUTH_METHOD=curl"
-elif [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then
-  export GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')
-  echo "AUTH_METHOD=curl"
-elif grep -q "github.com" ~/.git-credentials 2>/dev/null; then
-  export GITHUB_TOKEN=$(grep "github.com" ~/.git-credentials | head -1 | sed 's|https://[^:]*:\([^@]*\)@.*|\1|')
-  echo "AUTH_METHOD=curl"
-else
-  echo "AUTH_METHOD=none"
-  echo "Need to set up authentication first"
-fi
+# Reuse the helper script shipped with this skill
+source skills/github/github-auth/scripts/gh-env.sh
+
+echo "AUTH_METHOD=$GH_AUTH_METHOD"
+[ -n "$GH_USER" ] && echo "GH_USER=$GH_USER"
+[ -n "$GH_OWNER_REPO" ] && echo "GH_OWNER_REPO=$GH_OWNER_REPO"
 ```
 
 ---

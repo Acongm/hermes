@@ -2,6 +2,8 @@
 
 Personal Hermes configuration plus a maintained mirror of the local skills catalog used by Hermes harness on this machine.
 
+Chinese version: `README.zh-CN.md`
+
 ## Repository purpose
 
 - Keep `Acongm/hermes` under `/Users/acongm/code/github/hermes` for ongoing maintenance.

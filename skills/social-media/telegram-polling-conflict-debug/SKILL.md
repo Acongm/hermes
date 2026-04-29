@@ -181,7 +181,7 @@ hermes pairing approve telegram <CODE>
 ```
 - 并确认 `TELEGRAM_ALLOWED_USERS` 包含该用户，例如：
 ```bash
-TELEGRAM_ALLOWED_USERS=5580371424,8391315723
+TELEGRAM_ALLOWED_USERS=<your_user_id>,<their_user_id>
 ```
 - 然后重启：
 ```bash
